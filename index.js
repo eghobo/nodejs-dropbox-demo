@@ -124,8 +124,8 @@ app.delete('*', setFileMeta, (req, res, next) => {
 
 app.put('*', setFileMeta, setDirMeta, (req, res, next) => {
     async () => {
-        if (!req.stat) {
-            return res.send(405, 'File does not exists')
+        if (req.stat) {
+            return res.send(405, 'File exists')
         }
 
         await mkdirp.promise(req.dirPath)
@@ -141,8 +141,8 @@ app.put('*', setFileMeta, setDirMeta, (req, res, next) => {
 
 app.post('*', setFileMeta, setDirMeta, (req, res, next) => {
     async () => {
-        if (req.stat) {
-            return res.send(405, 'File exists')
+        if (!req.stat) {
+            return res.send(405, 'File does not exists')
         }
         if (req.isDir) {
             return res.send(405, 'Path is a directory')
